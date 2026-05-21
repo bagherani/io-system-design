@@ -1,0 +1,22 @@
+{
+  "name": "io-system-design",
+  "private": true,
+  "scripts": {
+    "01-grpc": "concurrently \"node 01-grpc/apps/inventory-service/index.js\" \"node 01-grpc/apps/cart-service/index.js\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.8.3",
+    "turbo": "^2.9.14",
+    "typescript": "6.0.3"
+  },
+  "packageManager": "npm@11.7.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.4",
+    "@grpc/proto-loader": "^0.8.1",
+    "express": "^5.2.1"
+  }
+}

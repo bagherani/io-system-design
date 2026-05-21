@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package inventory;
+
+service InventoryService {
+  rpc CheckAvailability(ProductRequest) returns (AvailabilityResponse);
+  rpc DecreaseQuantity(DecreaseRequest) returns (DecreaseResponse);
+}
+
+message ProductRequest {
+  int32 productId = 1;
+}
+
+message AvailabilityResponse {
+  int32 availability = 1;
+}
+
+message DecreaseRequest {
+  int32 productId = 1;
+  int32 amount = 2;
+}
+
+message DecreaseResponse {
+  bool success = 1;
+}

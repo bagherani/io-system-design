@@ -1,0 +1,21 @@
+# Used when building from repo root.
+# Exclude node_modules so images do a clean install (FeedService/LikeService copy pre-built .next only).
+# Do NOT exclude .next: FeedService and LikeService Dockerfiles need apps/*/\.next/standalone and .next/static.
+
+node_modules
+**/node_modules
+.pnpm-store
+out
+**/out
+dist
+**/dist
+
+.git
+.gitignore
+*.md
+.env*
+infrastructure
+
+.turbo
+*.log
+.DS_Store
