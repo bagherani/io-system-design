@@ -1,6 +1,11 @@
 output "load_balancer_url" {
-  description = "Nginx entrypoint that load-balances across both Node.js replicas."
+  description = "HTTP Nginx entrypoint that load-balances across both Node.js replicas."
   value       = "http://localhost:${var.nginx_external_port}"
+}
+
+output "load_balancer_https_url" {
+  description = "HTTPS Nginx entrypoint with HTTP/2 enabled and a local self-signed certificate."
+  value       = "https://localhost:${var.nginx_https_external_port}"
 }
 
 output "replica_one_url" {

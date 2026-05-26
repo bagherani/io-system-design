@@ -32,6 +32,8 @@ Run a local Nginx load balancer in front of two funny Node.js replicas:
 npm run 02-nginx
 ```
 
+Open `http://localhost:8088` for HTTP, or `https://localhost:8443` for HTTPS with HTTP/2 and a local self-signed certificate.
+
 Clean everything up when you are done:
 
 ```sh

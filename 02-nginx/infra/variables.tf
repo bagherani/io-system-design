@@ -1,7 +1,13 @@
 variable "nginx_external_port" {
-  description = "Host port for the Nginx load balancer."
+  description = "Host HTTP port for the Nginx load balancer."
   type        = number
   default     = 8088
+}
+
+variable "nginx_https_external_port" {
+  description = "Host HTTPS port for the Nginx load balancer with HTTP/2 enabled."
+  type        = number
+  default     = 8443
 }
 
 variable "replica_one_external_port" {
