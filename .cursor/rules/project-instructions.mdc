@@ -1,0 +1,10 @@
+---
+description: Follow the repository teaching and implementation instructions
+alwaysApply: true
+---
+
+# Project Instructions
+
+Before making project changes, read `Instructions.md` and follow its guidance for examples, documentation, ports, local infrastructure, and teaching style.
+
+If the project conventions or lesson structure change, update `Instructions.md` so future agents stay aligned.

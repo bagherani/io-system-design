@@ -1,0 +1,9 @@
+### Load-balanced request - send this a few times and watch the replica change
+GET http://localhost:8088
+
+### Direct request to replica 1
+GET http://localhost:4101
+
+### Direct request to replica 2
+GET http://localhost:4102
+
