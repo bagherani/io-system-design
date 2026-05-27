@@ -39,3 +39,19 @@ Clean everything up when you are done:
 ```sh
 npm run 02-nginx:destroy
 ```
+
+## 03-be-db-app
+
+Run a local MongoDB container and a Node.js script that inserts, queries, updates, and deletes mock users:
+
+```sh
+npm run 03-be-db-app
+```
+
+This example maps MongoDB to `localhost:27031` so it does not conflict with a default local MongoDB on `27017`.
+
+Clean the database container and volume when you are done:
+
+```sh
+npm run 03-be-db-app:destroy
+```
