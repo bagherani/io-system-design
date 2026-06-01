@@ -1,0 +1,142 @@
+services:
+  # MongoDB 7 requires config servers and shard servers to run as replica sets.
+  # Each one has a single member here; replication itself is covered in 04.
+  config-server:
+    image: mongo:7
+    container_name: io-system-design-05-config-server
+    command:
+      [
+        "mongod",
+        "--configsvr",
+        "--replSet",
+        "configrs",
+        "--port",
+        "27019",
+        "--bind_ip_all",
+        "--dbpath",
+        "/data/configdb",
+      ]
+    ports:
+      - "27050:27019"
+    volumes:
+      - mongodb_05_config_data:/data/configdb
+
+  shard-country-a:
+    image: mongo:7
+    container_name: io-system-design-05-shard-country-a
+    command: ["mongod", "--shardsvr", "--replSet", "countryARepl", "--port", "27018", "--bind_ip_all"]
+    ports:
+      - "27051:27018"
+    volumes:
+      - mongodb_05_shard_country_a_data:/data/db
+
+  shard-country-b:
+    image: mongo:7
+    container_name: io-system-design-05-shard-country-b
+    command: ["mongod", "--shardsvr", "--replSet", "countryBRepl", "--port", "27018", "--bind_ip_all"]
+    ports:
+      - "27052:27018"
+    volumes:
+      - mongodb_05_shard_country_b_data:/data/db
+
+  config-setup:
+    image: mongo:7
+    depends_on:
+      - config-server
+    volumes:
+      - ./init-config-server.js:/scripts/init-config-server.js:ro
+    command: >
+      bash -lc '
+        until mongosh --host config-server:27019 --quiet --eval "db.adminCommand({ ping: 1 }).ok"; do
+          echo "Waiting for config server...";
+          sleep 1;
+        done;
+        mongosh --host config-server:27019 /scripts/init-config-server.js
+      '
+
+  shard-country-a-setup:
+    image: mongo:7
+    depends_on:
+      - shard-country-a
+    environment:
+      REPLICA_SET_NAME: countryARepl
+      SHARD_HOST: shard-country-a:27018
+    volumes:
+      - ./init-shard-server.js:/scripts/init-shard-server.js:ro
+    command: >
+      bash -lc '
+        until mongosh --host shard-country-a:27018 --quiet --eval "db.adminCommand({ ping: 1 }).ok"; do
+          echo "Waiting for shard country A...";
+          sleep 1;
+        done;
+        mongosh --host shard-country-a:27018 /scripts/init-shard-server.js
+      '
+
+  shard-country-b-setup:
+    image: mongo:7
+    depends_on:
+      - shard-country-b
+    environment:
+      REPLICA_SET_NAME: countryBRepl
+      SHARD_HOST: shard-country-b:27018
+    volumes:
+      - ./init-shard-server.js:/scripts/init-shard-server.js:ro
+    command: >
+      bash -lc '
+        until mongosh --host shard-country-b:27018 --quiet --eval "db.adminCommand({ ping: 1 }).ok"; do
+          echo "Waiting for shard country B...";
+          sleep 1;
+        done;
+        mongosh --host shard-country-b:27018 /scripts/init-shard-server.js
+      '
+
+  mongos:
+    image: mongo:7
+    container_name: io-system-design-05-mongos
+    depends_on:
+      - config-server
+      - shard-country-a
+      - shard-country-b
+    command: ["mongos", "--configdb", "configrs/config-server:27019", "--bind_ip_all"]
+    ports:
+      - "27053:27017"
+
+  sharding-setup:
+    image: mongo:7
+    depends_on:
+      - mongos
+      - shard-country-a
+      - shard-country-b
+    volumes:
+      - ./init-sharding.js:/scripts/init-sharding.js:ro
+    command: >
+      bash -lc '
+        until mongosh --host mongos:27017 --quiet --eval "db.adminCommand({ ping: 1 }).ok"; do
+          echo "Waiting for mongos router...";
+          sleep 1;
+        done;
+        mongosh --host mongos:27017 /scripts/init-sharding.js
+      '
+
+  app:
+    image: node:22-alpine
+    depends_on:
+      - mongos
+    working_dir: /app
+    volumes:
+      - ..:/app:ro
+    environment:
+      MONGODB_URI: mongodb://mongos:27017/shardingDemo
+    command: >
+      sh -c '
+        if [ ! -d node_modules/mongodb ]; then
+          echo "Run npm install from the repository root first.";
+          exit 1;
+        fi;
+        node 05-sharding/index.js
+      '
+
+volumes:
+  mongodb_05_config_data:
+  mongodb_05_shard_country_a_data:
+  mongodb_05_shard_country_b_data:

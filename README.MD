@@ -69,3 +69,19 @@ Clean the replica set containers and volumes when you are done:
 ```sh
 npm run 04-replicaset:destroy
 ```
+
+## 05-sharding
+
+Run a local MongoDB sharded cluster with two country shards and a Node.js script that inserts users into a `users` collection sharded by `country`:
+
+```sh
+npm run 05-sharding
+```
+
+This example maps the config server to `localhost:27050`, the shard servers to `localhost:27051` and `localhost:27052`, and the `mongos` router to `localhost:27053`.
+
+Clean the sharded cluster containers and volumes when you are done:
+
+```sh
+npm run 05-sharding:destroy
+```

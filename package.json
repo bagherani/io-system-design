@@ -11,7 +11,10 @@
     "03-be-db-app:destroy": "docker compose -f 03-be-db-app/docker-compose.yml down -v",
     "04-replicaset": "npm run 04-replicaset:db && docker compose -f 04-replicaset/docker-compose.yml run --rm app",
     "04-replicaset:db": "docker compose -f 04-replicaset/docker-compose.yml up -d mongodb-primary mongodb-secondary-1 mongodb-secondary-2 && docker compose -f 04-replicaset/docker-compose.yml run --rm replica-setup",
-    "04-replicaset:destroy": "docker compose -f 04-replicaset/docker-compose.yml down -v"
+    "04-replicaset:destroy": "docker compose -f 04-replicaset/docker-compose.yml down -v",
+    "05-sharding": "npm run 05-sharding:db && docker compose -f 05-sharding/docker-compose.yml run --rm app",
+    "05-sharding:db": "docker compose -f 05-sharding/docker-compose.yml up -d config-server shard-country-a shard-country-b && docker compose -f 05-sharding/docker-compose.yml run --rm config-setup && docker compose -f 05-sharding/docker-compose.yml run --rm shard-country-a-setup && docker compose -f 05-sharding/docker-compose.yml run --rm shard-country-b-setup && docker compose -f 05-sharding/docker-compose.yml up -d mongos && docker compose -f 05-sharding/docker-compose.yml run --rm sharding-setup",
+    "05-sharding:destroy": "docker compose -f 05-sharding/docker-compose.yml down -v"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
