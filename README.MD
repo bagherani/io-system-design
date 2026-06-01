@@ -4,8 +4,6 @@ On a Mac, install the tools quickly with Homebrew:
 
 ```sh
 brew install --cask docker
-brew tap hashicorp/tap
-brew install hashicorp/tap/terraform
 ```
 
 Open Docker Desktop once after installing it.

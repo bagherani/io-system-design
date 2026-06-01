@@ -7,6 +7,7 @@ This repository is for teaching system design concepts with small, runnable exam
 - Keep root documentation focused on how to run each example. Avoid long testing guides, extension setup, or extra explanation unless asked.
 - Use plain JavaScript/Node.js patterns unless a lesson needs something else.
 - Keep JavaScript dependencies and runnable npm scripts in the root `package.json` rather than adding per-lesson packages.
+- Prefer Docker Compose for local container infrastructure unless a lesson is specifically teaching another provisioning tool.
 - Avoid port conflicts between lessons. Check existing examples before choosing new host ports. Current lesson-owned host ports include `3001`, `4101`, `4102`, `8088`, `8443`, and `27031` for `03-be-db-app` MongoDB.
 - Add small `.http` files for request demos when useful, similar to `01-grpc/cart-service.http`.
 - Keep infrastructure local and easy to clean up.

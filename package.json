@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "01-grpc": "concurrently \"node 01-grpc/apps/inventory-service/index.js\" \"node 01-grpc/apps/cart-service/index.js\"",
-    "02-nginx": "terraform -chdir=02-nginx/infra init && terraform -chdir=02-nginx/infra apply -auto-approve",
+    "02-nginx": "docker compose -f 02-nginx/docker-compose.yml up -d --build",
     "02-nginx:reload": "docker exec nginx-load-balancer nginx -s reload",
-    "02-nginx:destroy": "terraform -chdir=02-nginx/infra destroy -auto-approve",
+    "02-nginx:destroy": "docker compose -f 02-nginx/docker-compose.yml down -v",
     "03-be-db-app": "npm run 03-be-db-app:db && node 03-be-db-app/index.js",
     "03-be-db-app:db": "docker compose -f 03-be-db-app/docker-compose.yml up -d",
     "03-be-db-app:destroy": "docker compose -f 03-be-db-app/docker-compose.yml down -v"
