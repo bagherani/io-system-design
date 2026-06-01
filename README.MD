@@ -85,3 +85,15 @@ Clean the sharded cluster containers and volumes when you are done:
 ```sh
 npm run 05-sharding:destroy
 ```
+
+## 06-blob-storage
+
+Run a Node.js API that creates short-lived signed URLs for uploading to and downloading from S3:
+
+```sh
+npm run 06-blob-storage
+```
+
+Before running it, copy `06-blob-storage/.env.example` to `06-blob-storage/.env` and fill in the S3 bucket and AWS credentials.
+
+Use `06-blob-storage/request.http` to request an upload URL, upload a sample file directly to S3, request a download URL, and read the file back.

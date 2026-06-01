@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:3016
+@fileKey = lessons/signed-url-demo.txt
+@contentType = text/plain
+
+# Paste the "url" from "Get a signed URL for upload" here.
+@uploadUrl = https://paste-upload-signed-url-here
+
+# Paste the "url" from "Get a signed URL for download" here.
+@downloadUrl = https://paste-download-signed-url-here
+
+### Get a signed URL for upload
+POST {{baseUrl}}/signed-url/upload
+Content-Type: application/json
+
+{
+  "key": "{{fileKey}}",
+  "contentType": "{{contentType}}"
+}
+
+### Upload a file directly to S3 with the signed URL
+# Use the signed upload URL above. This request does not go through the Express API.
+PUT {{uploadUrl}}
+Content-Type: {{contentType}}
+
+Hello from the signed URL demo.
+
+### Get a signed URL for download
+POST {{baseUrl}}/signed-url/download
+Content-Type: application/json
+
+{
+  "key": "{{fileKey}}"
+}
+
+### Download the file directly from S3 with the signed URL
+# Use the signed download URL above. This request does not go through the Express API.
+GET {{downloadUrl}}

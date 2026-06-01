@@ -14,7 +14,8 @@
     "04-replicaset:destroy": "docker compose -f 04-replicaset/docker-compose.yml down -v",
     "05-sharding": "npm run 05-sharding:db && docker compose -f 05-sharding/docker-compose.yml run --rm app",
     "05-sharding:db": "docker compose -f 05-sharding/docker-compose.yml up -d config-server shard-country-a shard-country-b && docker compose -f 05-sharding/docker-compose.yml run --rm config-setup && docker compose -f 05-sharding/docker-compose.yml run --rm shard-country-a-setup && docker compose -f 05-sharding/docker-compose.yml run --rm shard-country-b-setup && docker compose -f 05-sharding/docker-compose.yml up -d mongos && docker compose -f 05-sharding/docker-compose.yml run --rm sharding-setup",
-    "05-sharding:destroy": "docker compose -f 05-sharding/docker-compose.yml down -v"
+    "05-sharding:destroy": "docker compose -f 05-sharding/docker-compose.yml down -v",
+    "06-blob-storage": "node 06-blob-storage/index.js"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
@@ -27,8 +28,11 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1058.0",
+    "@aws-sdk/s3-request-presigner": "^3.1058.0",
     "@grpc/grpc-js": "^1.14.4",
     "@grpc/proto-loader": "^0.8.1",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mongodb": "^7.2.0"
   }
