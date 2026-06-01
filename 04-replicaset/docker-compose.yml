@@ -1,0 +1,69 @@
+services:
+  mongodb-primary:
+    image: mongo:7
+    container_name: io-system-design-04-mongodb-primary
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27041:27017"
+    volumes:
+      - mongodb_04_primary_data:/data/db
+
+  mongodb-secondary-1:
+    image: mongo:7
+    container_name: io-system-design-04-mongodb-secondary-1
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27042:27017"
+    volumes:
+      - mongodb_04_secondary_1_data:/data/db
+
+  mongodb-secondary-2:
+    image: mongo:7
+    container_name: io-system-design-04-mongodb-secondary-2
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27043:27017"
+    volumes:
+      - mongodb_04_secondary_2_data:/data/db
+
+  replica-setup:
+    image: mongo:7
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary-1
+      - mongodb-secondary-2
+    volumes:
+      - ./init-replica-set.js:/scripts/init-replica-set.js:ro
+    command: >
+      bash -lc '
+        until mongosh --host mongodb-primary:27017 --quiet --eval "db.adminCommand({ ping: 1 }).ok"; do
+          echo "Waiting for MongoDB primary container...";
+          sleep 1;
+        done;
+        mongosh --host mongodb-primary:27017 /scripts/init-replica-set.js
+      '
+
+  app:
+    image: node:22-alpine
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary-1
+      - mongodb-secondary-2
+    working_dir: /app
+    volumes:
+      - ..:/app:ro
+    environment:
+      MONGODB_URI: mongodb://mongodb-primary:27017,mongodb-secondary-1:27017,mongodb-secondary-2:27017/replicaSetDemo?replicaSet=rs0
+    command: >
+      sh -c '
+        if [ ! -d node_modules/mongodb ]; then
+          echo "Run npm install from the repository root first.";
+          exit 1;
+        fi;
+        node 04-replicaset/index.js
+      '
+
+volumes:
+  mongodb_04_primary_data:
+  mongodb_04_secondary_1_data:
+  mongodb_04_secondary_2_data:

@@ -8,7 +8,10 @@
     "02-nginx:destroy": "docker compose -f 02-nginx/docker-compose.yml down -v",
     "03-be-db-app": "npm run 03-be-db-app:db && node 03-be-db-app/index.js",
     "03-be-db-app:db": "docker compose -f 03-be-db-app/docker-compose.yml up -d",
-    "03-be-db-app:destroy": "docker compose -f 03-be-db-app/docker-compose.yml down -v"
+    "03-be-db-app:destroy": "docker compose -f 03-be-db-app/docker-compose.yml down -v",
+    "04-replicaset": "npm run 04-replicaset:db && docker compose -f 04-replicaset/docker-compose.yml run --rm app",
+    "04-replicaset:db": "docker compose -f 04-replicaset/docker-compose.yml up -d mongodb-primary mongodb-secondary-1 mongodb-secondary-2 && docker compose -f 04-replicaset/docker-compose.yml run --rm replica-setup",
+    "04-replicaset:destroy": "docker compose -f 04-replicaset/docker-compose.yml down -v"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

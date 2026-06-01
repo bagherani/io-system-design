@@ -53,3 +53,19 @@ Clean the database container and volume when you are done:
 ```sh
 npm run 03-be-db-app:destroy
 ```
+
+## 04-replicaset
+
+Run a local MongoDB replica set with one primary, two secondaries, and a Node.js script that writes to the primary and reads from a secondary:
+
+```sh
+npm run 04-replicaset
+```
+
+This example maps the replica set members to `localhost:27041`, `localhost:27042`, and `localhost:27043`.
+
+Clean the replica set containers and volumes when you are done:
+
+```sh
+npm run 04-replicaset:destroy
+```
