@@ -1,0 +1,139 @@
+services:
+  redis-node-1:
+    image: redis:7.2-alpine
+    container_name: io-system-design-07-redis-node-1
+    command: ["redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes", "--protected-mode", "no"]
+    ports:
+      - "6371:6379"
+    volumes:
+      - redis_07_node_1_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  redis-node-2:
+    image: redis:7.2-alpine
+    container_name: io-system-design-07-redis-node-2
+    command: ["redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes", "--protected-mode", "no"]
+    ports:
+      - "6372:6379"
+    volumes:
+      - redis_07_node_2_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  redis-node-3:
+    image: redis:7.2-alpine
+    container_name: io-system-design-07-redis-node-3
+    command: ["redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes", "--protected-mode", "no"]
+    ports:
+      - "6373:6379"
+    volumes:
+      - redis_07_node_3_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  redis-node-4:
+    image: redis:7.2-alpine
+    container_name: io-system-design-07-redis-node-4
+    command: ["redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes", "--protected-mode", "no"]
+    ports:
+      - "6374:6379"
+    volumes:
+      - redis_07_node_4_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  redis-node-5:
+    image: redis:7.2-alpine
+    container_name: io-system-design-07-redis-node-5
+    command: ["redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes", "--protected-mode", "no"]
+    ports:
+      - "6375:6379"
+    volumes:
+      - redis_07_node_5_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  redis-node-6:
+    image: redis:7.2-alpine
+    container_name: io-system-design-07-redis-node-6
+    command: ["redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes", "--protected-mode", "no"]
+    ports:
+      - "6376:6379"
+    volumes:
+      - redis_07_node_6_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  redis-cluster-setup:
+    image: redis:7.2-alpine
+    depends_on:
+      redis-node-1:
+        condition: service_healthy
+      redis-node-2:
+        condition: service_healthy
+      redis-node-3:
+        condition: service_healthy
+      redis-node-4:
+        condition: service_healthy
+      redis-node-5:
+        condition: service_healthy
+      redis-node-6:
+        condition: service_healthy
+    command: >
+      sh -c '
+        if redis-cli -h redis-node-1 -p 6379 cluster info | grep -q "cluster_state:ok"; then
+          echo "Redis cluster already configured.";
+          exit 0;
+        fi;
+
+        redis-cli --cluster create redis-node-1:6379 redis-node-2:6379 redis-node-3:6379 redis-node-4:6379 redis-node-5:6379 redis-node-6:6379 --cluster-replicas 1 --cluster-yes
+      '
+
+  app:
+    image: node:22-alpine
+    depends_on:
+      redis-cluster-setup:
+        condition: service_completed_successfully
+    working_dir: /app
+    volumes:
+      - ..:/app:ro
+    environment:
+      PORT: "3017"
+      REDIS_CLUSTER_NODES: redis-node-1:6379,redis-node-2:6379,redis-node-3:6379,redis-node-4:6379,redis-node-5:6379,redis-node-6:6379
+    ports:
+      - "3017:3017"
+    command: >
+      sh -c '
+        if [ ! -d node_modules/redis ]; then
+          echo "Run npm install from the repository root first.";
+          exit 1;
+        fi;
+        node 07-caching/index.js
+      '
+
+volumes:
+  redis_07_node_1_data:
+  redis_07_node_2_data:
+  redis_07_node_3_data:
+  redis_07_node_4_data:
+  redis_07_node_5_data:
+  redis_07_node_6_data:

@@ -15,9 +15,14 @@
     "05-sharding": "npm run 05-sharding:db && docker compose -f 05-sharding/docker-compose.yml run --rm app",
     "05-sharding:db": "docker compose -f 05-sharding/docker-compose.yml up -d config-server shard-country-a shard-country-b && docker compose -f 05-sharding/docker-compose.yml run --rm config-setup && docker compose -f 05-sharding/docker-compose.yml run --rm shard-country-a-setup && docker compose -f 05-sharding/docker-compose.yml run --rm shard-country-b-setup && docker compose -f 05-sharding/docker-compose.yml up -d mongos && docker compose -f 05-sharding/docker-compose.yml run --rm sharding-setup",
     "05-sharding:destroy": "docker compose -f 05-sharding/docker-compose.yml down -v",
-    "06-blob-storage": "node 06-blob-storage/index.js"
+    "06-blob-storage": "node 06-blob-storage/index.js",
+    "07-caching": "docker compose -f 07-caching/docker-compose.yml up app",
+    "07-caching:redis": "docker compose -f 07-caching/docker-compose.yml up -d redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5 redis-node-6 && docker compose -f 07-caching/docker-compose.yml run --rm redis-cluster-setup",
+    "07-caching:destroy": "docker compose -f 07-caching/docker-compose.yml down -v"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
     "concurrently": "^9.2.1",
     "prettier": "^3.8.3",
     "turbo": "^2.9.14",
@@ -34,6 +39,7 @@
     "@grpc/proto-loader": "^0.8.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongodb": "^7.2.0"
+    "mongodb": "^7.2.0",
+    "redis": "^6.0.0"
   }
 }
