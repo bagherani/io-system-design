@@ -18,7 +18,10 @@
     "06-blob-storage": "node 06-blob-storage/index.js",
     "07-caching": "docker compose -f 07-caching/docker-compose.yml up app",
     "07-caching:redis": "docker compose -f 07-caching/docker-compose.yml up -d redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5 redis-node-6 && docker compose -f 07-caching/docker-compose.yml run --rm redis-cluster-setup",
-    "07-caching:destroy": "docker compose -f 07-caching/docker-compose.yml down -v"
+    "07-caching:destroy": "docker compose -f 07-caching/docker-compose.yml down -v",
+    "08-eda": "docker compose -f 08-eda/docker-compose.yml up",
+    "08-eda:kafka": "docker compose -f 08-eda/docker-compose.yml up -d kafka",
+    "08-eda:destroy": "docker compose -f 08-eda/docker-compose.yml down -v"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
@@ -39,6 +42,7 @@
     "@grpc/proto-loader": "^0.8.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "kafkajs": "^2.2.4",
     "mongodb": "^7.2.0",
     "redis": "^6.0.0"
   }

@@ -1,0 +1,56 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-07f1f4a2f007",
+    "name": "07-caching",
+    "description": "Requests for the 07-caching Redis Cluster lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Check the API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/"
+      },
+      "response": []
+    },
+    {
+      "name": "Read likes for an id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/like/{{id}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Add one like for an id",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/like/{{id}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Read likes again",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/like/{{id}}"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3017"
+    },
+    {
+      "key": "id",
+      "value": "post-1"
+    }
+  ]
+}

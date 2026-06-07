@@ -1,0 +1,52 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-08f1f4a2f008",
+    "name": "08-eda",
+    "description": "Requests for the 08-eda Kafka ingress lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Check the ingress API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/"
+      },
+      "response": []
+    },
+    {
+      "name": "Publish an order event consumed by app 2 and app 3",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/order/order-1"
+      },
+      "response": []
+    },
+    {
+      "name": "Publish another order event",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/order/order-2"
+      },
+      "response": []
+    },
+    {
+      "name": "Publish an incident event consumed by app 4",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/incident/incident-1"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3018"
+    }
+  ]
+}

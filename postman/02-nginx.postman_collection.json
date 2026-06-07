@@ -1,0 +1,64 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-02f1f4a2f002",
+    "name": "02-nginx",
+    "description": "Requests for the 02-nginx load balancer lesson. The HTTPS endpoint uses a local self-signed certificate, so Postman may need SSL certificate verification disabled for this local request.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Load-balanced request - send this a few times and watch the replica change",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{httpBaseUrl}}"
+      },
+      "response": []
+    },
+    {
+      "name": "HTTPS + HTTP/2 load-balanced request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{httpsBaseUrl}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Direct request to replica 1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{replica1Url}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Direct request to replica 2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{replica2Url}}"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "httpBaseUrl",
+      "value": "http://localhost:8088"
+    },
+    {
+      "key": "httpsBaseUrl",
+      "value": "https://localhost:8443"
+    },
+    {
+      "key": "replica1Url",
+      "value": "http://localhost:4101"
+    },
+    {
+      "key": "replica2Url",
+      "value": "http://localhost:4102"
+    }
+  ]
+}

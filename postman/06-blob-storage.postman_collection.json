@@ -1,0 +1,107 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-06f1f4a2f006",
+    "name": "06-blob-storage",
+    "description": "Requests for the 06-blob-storage signed URL lesson. Paste returned signed URLs into the collection variables named uploadUrl and downloadUrl before running the direct S3 requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get a signed URL for upload",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"key\": \"{{fileKey}}\",\n  \"contentType\": \"{{contentType}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/signed-url/upload"
+      },
+      "response": []
+    },
+    {
+      "name": "Upload a file directly to S3 with the signed URL",
+      "request": {
+        "description": "Use the signed upload URL returned by the API. This request does not go through the Express API.",
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "Hello from the signed URL demo."
+        },
+        "url": "{{uploadUrl}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Get a signed URL for download",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"key\": \"{{fileKey}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/signed-url/download"
+      },
+      "response": []
+    },
+    {
+      "name": "Download the file directly from S3 with the signed URL",
+      "request": {
+        "description": "Use the signed download URL returned by the API. This request does not go through the Express API.",
+        "method": "GET",
+        "header": [],
+        "url": "{{downloadUrl}}"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3016"
+    },
+    {
+      "key": "fileKey",
+      "value": "lessons/signed-url-demo.txt"
+    },
+    {
+      "key": "contentType",
+      "value": "text/plain"
+    },
+    {
+      "key": "uploadUrl",
+      "value": "https://paste-upload-signed-url-here"
+    },
+    {
+      "key": "downloadUrl",
+      "value": "https://paste-download-signed-url-here"
+    }
+  ]
+}

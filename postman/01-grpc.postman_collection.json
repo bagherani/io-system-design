@@ -1,0 +1,43 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-01f1f4a2f001",
+    "name": "01-grpc",
+    "description": "Requests for the 01-grpc cart service lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add product 1 - should return true first time",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/add/1"
+      },
+      "response": []
+    },
+    {
+      "name": "Add product 2 - should return false",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/add/2"
+      },
+      "response": []
+    },
+    {
+      "name": "Add product 3 - should return true twice, then false",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/add/3"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001"
+    }
+  ]
+}

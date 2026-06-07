@@ -1,8 +1,0 @@
-### Add product 1 - should return true first time
-POST http://localhost:3001/add/1
-
-### Add product 2 - should return false
-POST http://localhost:3001/add/2
-
-### Add product 3 - should return true twice, then false
-POST http://localhost:3001/add/3

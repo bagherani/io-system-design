@@ -19,6 +19,7 @@ docker pull mongo:7
 docker pull node:22-alpine
 docker pull nginx:1.27-alpine
 docker pull redis:7.2-alpine
+docker pull apache/kafka:3.9.1
 docker pull alpine/openssl:latest
 
 docker compose -f 02-nginx/docker-compose.yml build
@@ -106,7 +107,7 @@ npm run 06-blob-storage
 
 Before running it, copy `06-blob-storage/.env.example` to `06-blob-storage/.env` and fill in the S3 bucket and AWS credentials.
 
-Use `06-blob-storage/request.http` to request an upload URL, upload a sample file directly to S3, request a download URL, and read the file back.
+Import `postman/06-blob-storage.postman_collection.json` to request an upload URL, upload a sample file directly to S3, request a download URL, and read the file back.
 
 ## 07-caching
 
@@ -116,7 +117,7 @@ Run a local Redis Cluster with three masters, one replica per master, and a Node
 npm run 07-caching
 ```
 
-Open `http://localhost:3017`, or use `07-caching/request.http` to add and read likes.
+Open `http://localhost:3017`, or import `postman/07-caching.postman_collection.json` to add and read likes.
 
 This example maps the API to `localhost:3017` and Redis nodes to `localhost:6371` through `localhost:6376`.
 
@@ -124,4 +125,22 @@ Clean the Redis cluster containers and volumes when you are done:
 
 ```sh
 npm run 07-caching:destroy
+```
+
+## 08-eda
+
+Run a local Kafka broker, an HTTP ingress producer, and three separate consumer apps:
+
+```sh
+npm run 08-eda
+```
+
+Open `http://localhost:3018`, or import `postman/08-eda.postman_collection.json` to publish order and incident events.
+
+`GET /order/:id` publishes to the `orders` topic, which is consumed by app 2 and app 3. `GET /incident/:id` publishes to the `incidents` topic, which is consumed by app 4.
+
+Clean the Kafka broker and app containers when you are done:
+
+```sh
+npm run 08-eda:destroy
 ```

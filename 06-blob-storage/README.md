@@ -23,7 +23,7 @@ The API listens on `http://localhost:3016` by default.
 - `POST /signed-url/upload` returns a signed `PUT` URL for one S3 object key.
 - `POST /signed-url/download` returns a signed `GET` URL for one S3 object key.
 
-Use `06-blob-storage/request.http` to walk through the full flow:
+Import `postman/06-blob-storage.postman_collection.json` to walk through the full flow:
 
 1. Ask the API for an upload URL.
 2. Use that URL to upload a file directly to S3.
