@@ -1,0 +1,158 @@
+{
+  "info": {
+    "_postman_id": "7af0129e-6f84-44ea-9443-f4c33ec4a004",
+    "name": "04-replicaset",
+    "description": "Requests for the 04-replicaset MongoDB read/write concerns and failover lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Check the API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/"
+      },
+      "response": []
+    },
+    {
+      "name": "Replica set status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/replica-set/status"
+      },
+      "response": []
+    },
+    {
+      "name": "Insert event with majority write concern",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const body = pm.response.json();",
+              "pm.collectionVariables.set('eventId', body.insertedEvent._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"lesson\",\n  \"message\": \"Majority write waits for replica acknowledgement\"\n}"
+        },
+        "url": "{{baseUrl}}/events?writeConcern=majority"
+      },
+      "response": []
+    },
+    {
+      "name": "Insert event with w:1 write concern",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"lesson\",\n  \"message\": \"w:1 only waits for the primary acknowledgement\"\n}"
+        },
+        "url": "{{baseUrl}}/events?writeConcern=acknowledged"
+      },
+      "response": []
+    },
+    {
+      "name": "Insert event with w:2 write concern",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"lesson\",\n  \"message\": \"w:2 waits for two replica set members\"\n}"
+        },
+        "url": "{{baseUrl}}/events?writeConcern=twoNodes"
+      },
+      "response": []
+    },
+    {
+      "name": "Read events from secondary with local read concern",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/events?readConcern=local&readPreference=secondary"
+      },
+      "response": []
+    },
+    {
+      "name": "Read events with majority read concern",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/events?readConcern=majority&readPreference=secondaryPreferred"
+      },
+      "response": []
+    },
+    {
+      "name": "Read inserted event with linearizable read",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/events/{{eventId}}?readConcern=linearizable&readPreference=primary"
+      },
+      "response": []
+    },
+    {
+      "name": "Stop current primary container",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/replica-set/stop-primary"
+      },
+      "response": []
+    },
+    {
+      "name": "Check election after primary stop",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/replica-set/status"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete all events",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/events"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3014"
+    },
+    {
+      "key": "eventId",
+      "value": ""
+    }
+  ]
+}

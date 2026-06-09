@@ -69,13 +69,15 @@ npm run 03-be-db-app:destroy
 
 ## 04-replicaset
 
-Run a local MongoDB replica set with one primary, two secondaries, and a Node.js script that writes to the primary and reads from a secondary:
+Run a local MongoDB replica set with one primary, two secondaries, and a Node.js API for trying different write concerns, read concerns, and read preferences:
 
 ```sh
 npm run 04-replicaset
 ```
 
-This example maps the replica set members to `localhost:27041`, `localhost:27042`, and `localhost:27043`.
+Open `http://localhost:3014`, or import `postman/04-replicaset.postman_collection.json` to try the replica set requests.
+
+This example maps the API to `localhost:3014` and the replica set members to `localhost:27041`, `localhost:27042`, and `localhost:27043`.
 
 Clean the replica set containers and volumes when you are done:
 

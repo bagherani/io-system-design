@@ -49,11 +49,15 @@ services:
       - mongodb-primary
       - mongodb-secondary-1
       - mongodb-secondary-2
+    ports:
+      - "3014:3014"
     working_dir: /app
     volumes:
       - ..:/app:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       MONGODB_URI: mongodb://mongodb-primary:27017,mongodb-secondary-1:27017,mongodb-secondary-2:27017/replicaSetDemo?replicaSet=rs0
+      PORT: 3014
     command: >
       sh -c '
         if [ ! -d node_modules/mongodb ]; then
