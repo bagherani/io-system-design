@@ -87,13 +87,15 @@ npm run 04-replicaset:destroy
 
 ## 05-sharding
 
-Run a local MongoDB sharded cluster with two country shards and a Node.js script that inserts users into a `users` collection sharded by `country`:
+Run a local MongoDB sharded cluster with two country shards and a Node.js API for trying targeted shard-key queries, scatter-gather queries, and writes across shard ranges:
 
 ```sh
 npm run 05-sharding
 ```
 
-This example maps the config server to `localhost:27050`, the shard servers to `localhost:27051` and `localhost:27052`, and the `mongos` router to `localhost:27053`.
+Open `http://localhost:3015`, or import `postman/05-sharding.postman_collection.json` to try the sharding requests.
+
+This example maps the API to `localhost:3015`, the config server to `localhost:27050`, the shard servers to `localhost:27051` and `localhost:27052`, and the `mongos` router to `localhost:27053`.
 
 Clean the sharded cluster containers and volumes when you are done:
 

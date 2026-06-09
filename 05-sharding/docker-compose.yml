@@ -122,11 +122,14 @@ services:
     image: node:22-alpine
     depends_on:
       - mongos
+    ports:
+      - "3015:3015"
     working_dir: /app
     volumes:
       - ..:/app:ro
     environment:
       MONGODB_URI: mongodb://mongos:27017/shardingDemo
+      PORT: 3015
     command: >
       sh -c '
         if [ ! -d node_modules/mongodb ]; then

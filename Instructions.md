@@ -9,7 +9,7 @@ This repository is for teaching system design concepts with small, runnable exam
 - Keep JavaScript dependencies and runnable npm scripts in the root `package.json` rather than adding per-lesson packages.
 - Prefer Docker Compose for local container infrastructure unless a lesson is specifically teaching another provisioning tool.
 - When adding or changing Docker-backed lessons, keep the root README's workshop machine prep section updated with any new `docker pull` commands and local image build commands students should run once before the workshop.
-- Avoid port conflicts between lessons. Check existing examples before choosing new host ports. Current lesson-owned host ports include `3001`, `4101`, `4102`, `8088`, `8443`, `3013`, `3014` plus `27031` for `03-be-db-app`, `27041`-`27043` for `04-replicaset` MongoDB, `27050`-`27053` for `05-sharding` MongoDB, `3017` plus `6371`-`6376` for `07-caching` Redis, and `3018` for `08-eda`.
+- Avoid port conflicts between lessons. Check existing examples before choosing new host ports. Current lesson-owned host ports include `3001`, `4101`, `4102`, `8088`, `8443`, `3013`, `3014`, `3015` plus `27031` for `03-be-db-app`, `27041`-`27043` for `04-replicaset` MongoDB, `27050`-`27053` for `05-sharding` MongoDB, `3017` plus `6371`-`6376` for `07-caching` Redis, and `3018` for `08-eda`.
 - Add small Postman collection JSON files under `postman/` for request demos when useful, named after the lesson folder, similar to `postman/01-grpc.postman_collection.json`.
 - Keep infrastructure local and easy to clean up.
 - Do not over-abstract early. Students should be able to read the files and understand the flow.

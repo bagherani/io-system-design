@@ -1,0 +1,142 @@
+{
+  "info": {
+    "_postman_id": "0d7fb3ad-1b3d-4031-b046-2db9676683f3",
+    "name": "05-sharding",
+    "description": "Requests for the 05-sharding MongoDB API lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Check the API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/"
+      },
+      "response": []
+    },
+    {
+      "name": "List cluster shards",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/cluster/shards"
+      },
+      "response": []
+    },
+    {
+      "name": "Reset seed users",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/users/seed"
+      },
+      "response": []
+    },
+    {
+      "name": "Show user distribution",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/distribution"
+      },
+      "response": []
+    },
+    {
+      "name": "Find all users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users"
+      },
+      "response": []
+    },
+    {
+      "name": "Targeted query by shard key country",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/by-country/Germany"
+      },
+      "response": []
+    },
+    {
+      "name": "Scatter-gather query by role",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/by-role/engineer"
+      },
+      "response": []
+    },
+    {
+      "name": "Explain targeted country query",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/explain?country=Germany"
+      },
+      "response": []
+    },
+    {
+      "name": "Explain scatter-gather role query",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/explain?role=engineer"
+      },
+      "response": []
+    },
+    {
+      "name": "Insert user in A-L shard range",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Amina Diallo\",\n  \"email\": \"amina-{{$timestamp}}@example.com\",\n  \"country\": \"France\",\n  \"role\": \"engineer\"\n}"
+        },
+        "url": "{{baseUrl}}/users"
+      },
+      "response": []
+    },
+    {
+      "name": "Insert user in M-Z shard range",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Maya Chen\",\n  \"email\": \"maya-{{$timestamp}}@example.com\",\n  \"country\": \"Singapore\",\n  \"role\": \"architect\"\n}"
+        },
+        "url": "{{baseUrl}}/users"
+      },
+      "response": []
+    },
+    {
+      "name": "Filter users by country query param",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users?country=Singapore"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3015"
+    }
+  ]
+}
