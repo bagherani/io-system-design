@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b4b5e5b6-3c17-4f0b-b581-06f1f4a2f006",
     "name": "06-blob-storage",
-    "description": "Requests for the 06-blob-storage signed URL lesson. Paste returned signed URLs into the collection variables named uploadUrl and downloadUrl before running the direct S3 requests.",
+    "description": "Requests for the 06-blob-storage signed URL lesson. The signed URL requests save uploadUrl and downloadUrl automatically so the direct S3 requests can run next.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -27,6 +27,27 @@
         },
         "url": "{{baseUrl}}/signed-url/upload"
       },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const body = pm.response.json();",
+              "",
+              "pm.collectionVariables.set('uploadUrl', body.url);",
+              "",
+              "if (body.headers && body.headers['Content-Type']) {",
+              "  pm.collectionVariables.set('contentType', body.headers['Content-Type']);",
+              "}",
+              "",
+              "pm.test('Saved signed upload URL', () => {",
+              "  pm.expect(body.url).to.be.a('string').and.not.empty;",
+              "});"
+            ]
+          }
+        }
+      ],
       "response": []
     },
     {
@@ -69,6 +90,23 @@
         },
         "url": "{{baseUrl}}/signed-url/download"
       },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const body = pm.response.json();",
+              "",
+              "pm.collectionVariables.set('downloadUrl', body.url);",
+              "",
+              "pm.test('Saved signed download URL', () => {",
+              "  pm.expect(body.url).to.be.a('string').and.not.empty;",
+              "});"
+            ]
+          }
+        }
+      ],
       "response": []
     },
     {
@@ -97,11 +135,11 @@
     },
     {
       "key": "uploadUrl",
-      "value": "https://paste-upload-signed-url-here"
+      "value": ""
     },
     {
       "key": "downloadUrl",
-      "value": "https://paste-download-signed-url-here"
+      "value": ""
     }
   ]
 }
