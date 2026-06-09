@@ -20,9 +20,20 @@ async function main() {
   console.log(`${serviceName} listening to topic "${topic}" as group "${groupId}"`);
 
   await consumer.run({
-    eachMessage: async ({ message }) => {
+    autoCommit: false,
+    eachMessage: async ({ topic, partition, message }) => {
       const event = JSON.parse(message.value.toString());
       console.log(`${serviceName} received:`, event);
+
+      // Kafka acknowledges work by committing the next offset after processing.
+      await consumer.commitOffsets([
+        {
+          topic,
+          partition,
+          offset: (BigInt(message.offset) + 1n).toString(),
+        },
+      ]);
+      console.log(`${serviceName} acknowledged offset ${message.offset}`);
     },
   });
 }

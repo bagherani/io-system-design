@@ -153,6 +153,8 @@ Open `http://localhost:3018`, or import `postman/08-eda.postman_collection.json`
 
 `GET /order/:id` publishes to the `orders` topic, which is consumed by app 2 and app 3. `GET /incident/:id` publishes to the `incidents` topic, which is consumed by app 4.
 
+The consumers manually acknowledge each event by committing the next Kafka offset after processing it. If a consumer crashes before that commit, Kafka can deliver the event again to the same consumer group, so handlers should be safe to run more than once.
+
 Clean the Kafka broker and app containers when you are done:
 
 ```sh
