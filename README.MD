@@ -51,13 +51,15 @@ npm run 02-nginx:destroy
 
 ## 03-be-db-app
 
-Run a local MongoDB container and a Node.js script that inserts, queries, updates, and deletes mock users:
+Run a local MongoDB container and a Node.js API that inserts, queries, updates, and deletes mock users:
 
 ```sh
 npm run 03-be-db-app
 ```
 
-This example maps MongoDB to `localhost:27031` so it does not conflict with a default local MongoDB on `27017`.
+Open `http://localhost:3013`, or import `postman/03-be-db-app.postman_collection.json` to try the CRUD requests.
+
+This example maps the API to `localhost:3013` and MongoDB to `localhost:27031` so it does not conflict with a default local MongoDB on `27017`.
 
 Clean the database container and volume when you are done:
 

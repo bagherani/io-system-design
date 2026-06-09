@@ -1,0 +1,131 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-03f1f4a2f003",
+    "name": "03-be-db-app",
+    "description": "Requests for the 03-be-db-app MongoDB CRUD API lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Check the API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/"
+      },
+      "response": []
+    },
+    {
+      "name": "Find all users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users"
+      },
+      "response": []
+    },
+    {
+      "name": "Find users by indexed role",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users?role=engineer"
+      },
+      "response": []
+    },
+    {
+      "name": "Search unindexed name with collection scan",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/search/scan?q=ada"
+      },
+      "response": []
+    },
+    {
+      "name": "Insert one user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const user = pm.response.json();",
+              "pm.collectionVariables.set('userId', user._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Donald Knuth\",\n  \"email\": \"knuth-{{$timestamp}}@example.com\",\n  \"role\": \"researcher\",\n  \"age\": 55,\n  \"active\": true,\n  \"skills\": [\"algorithms\", \"systems\", \"teaching\"],\n  \"certificates\": []\n}"
+        },
+        "url": "{{baseUrl}}/users"
+      },
+      "response": []
+    },
+    {
+      "name": "Find inserted user by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/{{userId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Update inserted user",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"role\": \"professor\",\n  \"active\": false,\n  \"certificates\": [\"MongoDB Basics\"]\n}"
+        },
+        "url": "{{baseUrl}}/users/{{userId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete inserted user",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/users/{{userId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "Explain age query",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/users/explain/age?minAge=40"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3013"
+    },
+    {
+      "key": "userId",
+      "value": ""
+    }
+  ]
+}
