@@ -127,6 +127,14 @@ Open `http://localhost:3017`, or import `postman/07-caching.postman_collection.j
 
 This example maps the API to `localhost:3017` and Redis nodes to `localhost:6371` through `localhost:6376`.
 
+REDIS CLI COMMANDS:
+```sh
+docker exec -it io-system-design-07-redis-node-1 redis-cli
+cluster nodes
+cluster slots
+cluster keyslot <key>
+```
+
 Clean the Redis cluster containers and volumes when you are done:
 
 ```sh
