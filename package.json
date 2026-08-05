@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "01-grpc": "concurrently \"node 01-grpc/apps/inventory-service/index.js\" \"node 01-grpc/apps/cart-service/index.js\"",
+    "01-networking": "docker compose -f 01-networking/docker-compose.yml up -d --build",
+    "01-networking:destroy": "docker compose -f 01-networking/docker-compose.yml down -v",
     "02-nginx": "docker compose -f 02-nginx/docker-compose.yml up -d --build",
     "02-nginx:reload": "docker exec nginx-load-balancer nginx -s reload",
     "02-nginx:destroy": "docker compose -f 02-nginx/docker-compose.yml down -v",

@@ -1,0 +1,124 @@
+{
+  "info": {
+    "_postman_id": "d3f84ec8-6731-4d3b-8095-e8472aaaf7b4",
+    "name": "01-networking",
+    "description": "Requests for the 01-networking lesson. server1 and server2 are private and only reachable through the NAT host.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "NAT request (run a few times and watch server 1/server 2 alternate)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('serverName is present', function () {",
+              "  pm.expect(body.serverName).to.be.a('string');",
+              "});",
+              "",
+              "pm.collectionVariables.set('lastServerName', body.serverName);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{natBaseUrl}}"
+      },
+      "response": []
+    },
+    {
+      "name": "NAT request again",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('response came from a known backend', function () {",
+              "  pm.expect(['server 1', 'server 2']).to.include(body.serverName);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{natBaseUrl}}"
+      },
+      "response": []
+    },
+    {
+      "name": "server 1 internet check via NAT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('handled by server 1', function () {",
+              "  pm.expect(body.serverName).to.eql('server 1');",
+              "});",
+              "",
+              "pm.test('outbound internet reachable', function () {",
+              "  pm.expect(body.outboundReachable).to.eql(true);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{server1NatUrl}}/internet-check"
+      },
+      "response": []
+    },
+    {
+      "name": "Direct backend access note (expected to fail - no host mapping)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{directServer1Url}}"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "natBaseUrl",
+      "value": "http://localhost:3019"
+    },
+    {
+      "key": "server1NatUrl",
+      "value": "http://localhost:3020"
+    },
+    {
+      "key": "directServer1Url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "lastServerName",
+      "value": ""
+    }
+  ]
+}
