@@ -25,40 +25,6 @@ docker pull alpine/openssl:latest
 docker compose -f 02-nginx/docker-compose.yml build
 ```
 
-## 01-networking
-
-Run a Linux NAT host in front of two private Node.js servers, plus a third private server that is not reachable through NAT:
-
-```sh
-npm run 01-networking
-```
-
-Use these NAT entry ports:
-
-- `http://localhost:3020`: always routes to `server 1`
-- `http://localhost:3021`: always routes to `server 2`
-
-You can call `http://localhost:3020/internet-check` to show outbound internet access from `server 1`.
-
-`server 3` stays private with no NAT route and no host port mapping. For shell demos, you can exec into `io-system-design-01-server3` and run outbound commands (for example `wget`) to show internet egress.
-
-TIP - connect to `server 3` and ping other private hosts:
-
-```sh
-docker exec -it io-system-design-01-server3 sh
-
-# inside the container shell
-ping -c 3 io-system-design-01-server1
-ping -c 3 io-system-design-01-server2
-ping -c 3 io-system-design-01-nat
-```
-
-Clean everything up when you are done:
-
-```sh
-npm run 01-networking:destroy
-```
-
 ## 01-grpc
 
 Run the gRPC inventory service and HTTP cart service:
