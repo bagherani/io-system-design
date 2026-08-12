@@ -67,6 +67,24 @@ Run the gRPC inventory service and HTTP cart service:
 npm run 01-grpc
 ```
 
+## 01-rate-limiting
+
+Run a local Nginx rate limiter in front of a Node.js app:
+
+```sh
+npm run 01-rate-limiting
+```
+
+Open `http://localhost:3019`, or import `postman/01-rate-limiting.postman_collection.json` to see the rate limiter in action.
+
+Nginx allows **10 requests/second** with a burst queue of **20**. Requests beyond that get a `429 Too Many Requests` response. To trigger the limit, use the Postman Collection Runner with 30+ iterations and 0ms delay.
+
+Clean everything up when you are done:
+
+```sh
+npm run 01-rate-limiting:destroy
+```
+
 ## 02-nginx
 
 Run a local Nginx load balancer in front of two funny Node.js replicas:
