@@ -1,6 +1,7 @@
 # Project Instructions
 
 This repository is for teaching system design concepts with small, runnable examples.
+Read the instructor notes from ./instructor-notes/instructor-notes.md
 
 - Keep examples simple, visual, and easy to explain in a lesson.
 - Prefer minimal code that demonstrates the concept clearly over production-style complexity.
