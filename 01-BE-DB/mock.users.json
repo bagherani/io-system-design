@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Ada Lovelace",
+    "email": "ada@example.com",
+    "role": "engineer",
+    "age": 36,
+    "active": true,
+    "skills": ["math", "mongodb", "systems"],
+    "certificates": []
+  },
+  {
+    "name": "Grace Hopper",
+    "email": "grace@example.com",
+    "role": "developer",
+    "age": 42,
+    "active": true,
+    "skills": ["compilers", "leadership", "mongodb"],
+    "certificates": []
+  },
+  {
+    "name": "Linus Torvalds",
+    "email": "linus@example.com",
+    "role": "maintainer",
+    "age": 33,
+    "active": true,
+    "skills": ["linux", "git", "systems"],
+    "certificates": []
+  },
+  {
+    "name": "Margaret Hamilton",
+    "email": "margaret@example.com",
+    "role": "engineer",
+    "age": 45,
+    "active": true,
+    "skills": ["software", "safety", "systems"],
+    "certificates": []
+  },
+  {
+    "name": "Katherine Johnson",
+    "email": "katherine@example.com",
+    "role": "analyst",
+    "age": 39,
+    "active": true,
+    "skills": ["math", "navigation", "research"],
+    "certificates": []
+  },
+  {
+    "name": "Barbara Liskov",
+    "email": "barbara@example.com",
+    "role": "developer",
+    "age": 48,
+    "active": true,
+    "skills": ["distributed systems", "programming", "mongodb"],
+    "certificates": []
+  }
+]

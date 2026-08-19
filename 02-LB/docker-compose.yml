@@ -24,7 +24,7 @@ services:
   app-one:
     build:
       context: ..
-      dockerfile: 02-nginx/.Dockerfile
+      dockerfile: ../01-BE-DB/.Dockerfile
     image: io-system-design-nginx-demo-app:latest
     container_name: nginx-demo-app-1
     restart: unless-stopped
@@ -37,7 +37,7 @@ services:
   app-two:
     build:
       context: ..
-      dockerfile: 02-nginx/.Dockerfile
+      dockerfile: ../01-BE-DB/.Dockerfile
     image: io-system-design-nginx-demo-app:latest
     container_name: nginx-demo-app-2
     restart: unless-stopped

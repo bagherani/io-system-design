@@ -5,11 +5,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-COPY 02-nginx/apps/server.js ./server.js
+COPY 01-BE-DB/index.js ./index.js
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
 EXPOSE 3000
 
-CMD ["node", "/app/server.js"]
+CMD ["node", "/app/index.js"]

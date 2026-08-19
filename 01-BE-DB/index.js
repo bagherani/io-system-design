@@ -1,67 +1,12 @@
 const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
+require("dotenv").config({ path: __dirname + "/.env.local" });
 
 const uri =
-  process.env.MONGODB_URI ||
-  "mongodb://root:example@localhost:27031/usersDB?authSource=admin";
-const port = Number(process.env.PORT || 3013);
+  process.env.DB_URI;
+const port = Number(process.env.PORT);
 
-const mockUsers = [
-  {
-    name: "Ada Lovelace",
-    email: "ada@example.com",
-    role: "engineer",
-    age: 36,
-    active: true,
-    skills: ["math", "mongodb", "systems"],
-    certificates: [],
-  },
-  {
-    name: "Grace Hopper",
-    email: "grace@example.com",
-    role: "developer",
-    age: 42,
-    active: true,
-    skills: ["compilers", "leadership", "mongodb"],
-    certificates: [],
-  },
-  {
-    name: "Linus Torvalds",
-    email: "linus@example.com",
-    role: "maintainer",
-    age: 33,
-    active: true,
-    skills: ["linux", "git", "systems"],
-    certificates: [],
-  },
-  {
-    name: "Margaret Hamilton",
-    email: "margaret@example.com",
-    role: "engineer",
-    age: 45,
-    active: true,
-    skills: ["software", "safety", "systems"],
-    certificates: [],
-  },
-  {
-    name: "Katherine Johnson",
-    email: "katherine@example.com",
-    role: "analyst",
-    age: 39,
-    active: true,
-    skills: ["math", "navigation", "research"],
-    certificates: [],
-  },
-  {
-    name: "Barbara Liskov",
-    email: "barbara@example.com",
-    role: "developer",
-    age: 48,
-    active: true,
-    skills: ["distributed systems", "programming", "mongodb"],
-    certificates: [],
-  },
-];
+const mockUsers = require("./mock.users.json");
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -146,7 +91,7 @@ async function main() {
 
     app.get("/", (request, response) => {
       response.json({
-        message: "03-be-db-app MongoDB CRUD API",
+        message: "01-BE-DB MongoDB CRUD API",
         endpoints: [
           "GET /users",
           "GET /users/search/scan?q=ada",
@@ -313,11 +258,11 @@ async function main() {
     });
 
     const server = app.listen(port, () => {
-      console.log(`03-be-db-app API listening on http://localhost:${port}`);
+      console.log(`01-BE-DB API listening on http://localhost:${port}`);
     });
 
     const shutdown = async () => {
-      console.log("Shutting down 03-be-db-app API...");
+      console.log("Shutting down 01-BE-DB API...");
       server.close(async () => {
         await client.close();
         console.log("MongoDB connection closed.");

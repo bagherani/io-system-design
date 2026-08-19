@@ -1,14 +1,14 @@
 services:
   mongodb:
     image: mongo:7
-    container_name: io-system-design-03-mongodb
+    container_name: io-system-design-01-mongodb
     ports:
       - "27031:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - mongodb_03_data:/data/db
+      - mongodb_01_data:/data/db
 
 volumes:
-  mongodb_03_data:
+  mongodb_01_data:
