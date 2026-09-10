@@ -44,3 +44,4 @@ yarn-error.log*
 
 # others
 /instructor-notes
+.history
