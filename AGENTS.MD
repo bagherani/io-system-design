@@ -5,12 +5,13 @@ Read the instructor notes from ./instructor-notes/instructor-notes.md
 
 - Keep examples simple, visual, and easy to explain in a lesson.
 - Prefer minimal code that demonstrates the concept clearly over production-style complexity.
+- Prioritize pedagogical readability over software engineering best practices: prefer concrete, hardcoded values and explicit step-by-step logic over loops, mapping, helper abstractions, or generic utility functions.
 - Keep root documentation focused on how to run each example. Avoid long testing guides, extension setup, or extra explanation unless asked.
 - Use plain JavaScript/Node.js patterns unless a lesson needs something else.
 - Keep JavaScript dependencies and runnable npm scripts in the root `package.json` rather than adding per-lesson packages.
 - Prefer Docker Compose for local container infrastructure unless a lesson is specifically teaching another provisioning tool.
 - When adding or changing Docker-backed lessons, keep the root README's workshop machine prep section updated with any new `docker pull` commands and local image build commands students should run once before the workshop.
-- Avoid port conflicts between lessons. Check existing examples before choosing new host ports. Current lesson-owned host ports include `3001`, `3013`, `3014`, `3015`, `3016`, `3017`, `3018`, `3019`, `3020`, `3021`, `4101`, `4102`, `8088`, and `8443`; `3019` is owned by `01-rate-limiting`; `3020` (control panel API) and `3021` (nginx entry) are owned by `app` (Module 1 dashboard); MongoDB ports include `27031` for `03-be-db-app`, `27041`-`27043` for `04-replicaset`, `27050`-`27053` for `05-sharding`, and `27061` for `app`; Redis ports include `6371`-`6376` for `07-caching`; and `01-grpc` also reserves service port `5001` for local gRPC traffic.
+- Avoid port conflicts between lessons. Check existing examples before choosing new host ports. Current lesson-owned host ports include `3001`, `3013`, `3014`, `3015`, `3016`, `3017`, `3018`, `3019`, `3020`, `3021`, `4101`, `4102`, `8088`, and `8443`; `3017` is owned by `01-redis`; `3019` is owned by `01-rate-limiting`; `3020` (control panel API) and `3021` (nginx entry) are owned by `app` (Module 1 dashboard); MongoDB ports include `27031` for `03-be-db-app`, `27041`-`27043` for `04-replicaset`, `27050`-`27053` for `05-sharding`, and `27061` for `app`; Redis ports include `6371`-`6373` for `01-redis`; and `01-grpc` also reserves service port `5001` for local gRPC traffic.
 - Add small Postman collection JSON files under `postman/` for request demos when useful, named after the lesson folder, similar to `postman/01-grpc.postman_collection.json`.
 - Keep infrastructure local and easy to clean up.
 - Do not over-abstract early. Students should be able to read the files and understand the flow.

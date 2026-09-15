@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-grpc
+  labels:
+    istio-injection: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory
+  namespace: istio-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+  template:
+    metadata:
+      labels:
+        app: inventory
+    spec:
+      containers:
+        - name: inventory
+          image: io-system-design/inventory:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: grpc
+              containerPort: 5001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory
+  namespace: istio-grpc
+spec:
+  selector:
+    app: inventory
+  ports:
+    - name: grpc
+      port: 5001
+      targetPort: grpc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart
+  namespace: istio-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart
+  template:
+    metadata:
+      labels:
+        app: cart
+    spec:
+      containers:
+        - name: cart
+          image: io-system-design/cart:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: INVENTORY_ADDRESS
+              value: inventory.istio-grpc.svc.cluster.local:5001
+          ports:
+            - name: http
+              containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart
+  namespace: istio-grpc
+spec:
+  selector:
+    app: cart
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+---
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: cart-gateway
+  namespace: istio-grpc
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: cart
+  namespace: istio-grpc
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - cart-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      retries:
+        attempts: 3
+        perTryTimeout: 1s
+        retryOn: connect-failure,reset,5xx
+      route:
+        - destination:
+            host: cart.istio-grpc.svc.cluster.local
+            port:
+              number: 3000
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: cart
+  namespace: istio-grpc
+spec:
+  host: cart.istio-grpc.svc.cluster.local
+  trafficPolicy:
+    connectionPool:
+      http:
+        http1MaxPendingRequests: 1
+        maxRequestsPerConnection: 1
+    outlierDetection:
+      consecutive5xxErrors: 2
+      interval: 5s
+      baseEjectionTime: 30s

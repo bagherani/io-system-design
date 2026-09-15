@@ -1,13 +1,13 @@
 {
   "info": {
-    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-06f1f4a2f006",
-    "name": "06-blob-storage",
-    "description": "Requests for the 06-blob-storage signed URL lesson. The signed URL requests save uploadUrl and downloadUrl automatically so the direct S3 requests can run next.",
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-02f1f4a2f002",
+    "name": "02-blob-storage",
+    "description": "Requests for the 02-blob-storage signed URL lesson. The signed URL requests save uploadUrl and downloadUrl automatically so direct S3 requests can run next.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Get a signed URL for upload",
+      "name": "1. Get signed URL for upload",
       "request": {
         "method": "POST",
         "header": [
@@ -51,7 +51,7 @@
       "response": []
     },
     {
-      "name": "Upload a file directly to S3 with the signed URL",
+      "name": "2. Upload file directly to S3",
       "request": {
         "description": "Use the signed upload URL returned by the API. This request does not go through the Express API.",
         "method": "PUT",
@@ -63,14 +63,14 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "Hello from the signed URL demo."
+          "raw": "Hello from the blob storage signed URL workshop demo."
         },
         "url": "{{uploadUrl}}"
       },
       "response": []
     },
     {
-      "name": "Get a signed URL for download",
+      "name": "3. Get signed URL for download",
       "request": {
         "method": "POST",
         "header": [
@@ -110,7 +110,7 @@
       "response": []
     },
     {
-      "name": "Download the file directly from S3 with the signed URL",
+      "name": "4. Download file directly from S3",
       "request": {
         "description": "Use the signed download URL returned by the API. This request does not go through the Express API.",
         "method": "GET",
@@ -127,7 +127,7 @@
     },
     {
       "key": "fileKey",
-      "value": "lessons/signed-url-demo.txt"
+      "value": "lessons/demo.txt"
     },
     {
       "key": "contentType",

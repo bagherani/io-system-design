@@ -21,51 +21,93 @@ docker pull nginx:1.27-alpine
 docker pull redis:7.2-alpine
 docker pull apache/kafka:3.9.1
 docker pull alpine/openssl:latest
+docker pull bitnami/kubectl:latest
+docker pull istio/istioctl:1.27.1
 
 docker compose -f 02-nginx/docker-compose.yml build
 ```
 
-## 01-grpc
+## 01-redis
 
-Run the gRPC inventory service and HTTP cart service:
-
-```sh
-npm run 01-grpc
-```
-
-## 01-rate-limiting
-
-Run a local Nginx rate limiter in front of a Node.js app:
+Run a local 3-node Redis Cluster and a Node.js API demonstrating hot key mitigation (celebrity profile posts list replicated with random suffix sharding):
 
 ```sh
-npm run 01-rate-limiting
+npm run 01-redis
 ```
 
-Open `http://localhost:3019`, or import `postman/01-rate-limiting.postman_collection.json` to see the rate limiter in action.
+This starts 3 Redis nodes on ports `6371`, `6372`, `6373`, automatically configures the cluster, and launches the API at `http://localhost:3017`.
 
-Nginx allows **10 requests/second** with a burst queue of **20**. Requests beyond that get a `429 Too Many Requests` response. To trigger the limit, use the Postman Collection Runner with 30+ iterations and 0ms delay.
+### Try the API
 
-Clean everything up when you are done:
+Import `postman/01-redis.postman_collection.json` or use `curl`:
+
+1. **Celebrity publishes new posts** (each post ID is prepended to the array across all 3 nodes at `celebrity:taylor:1`, `celebrity:taylor:2`, and `celebrity:taylor:3`):
+
+   ```sh
+   curl -X POST http://localhost:3017/celebrity/taylor/posts -H "Content-Type: application/json" -d '{"postId": "100"}'
+   curl -X POST http://localhost:3017/celebrity/taylor/posts -H "Content-Type: application/json" -d '{"postId": "200"}'
+   curl -X POST http://localhost:3017/celebrity/taylor/posts -H "Content-Type: application/json" -d '{"postId": "300"}'
+   ```
+
+2. **Read celebrity posts** (randomly selects 1 of the 3 replica keys to balance heavy read traffic across different cluster nodes):
+
+   ```sh
+   curl http://localhost:3017/celebrity/taylor/posts
+   ```
+
+   _Response returns `["300", "200", "100"]` along with the chosen suffix and queried key._
+
+3. **Inspect all 3 replica copies across the cluster**:
+   ```sh
+   curl http://localhost:3017/celebrity/taylor/posts/all
+   ```
+
+### Clean Up
 
 ```sh
-npm run 01-rate-limiting:destroy
+npm run 01-redis:destroy
 ```
 
-## 02-nginx
+## 02-blob-storage
 
-Run a local Nginx load balancer in front of two funny Node.js replicas:
+Run a Node.js API that creates short-lived S3 signed URLs so clients can upload and download files directly without proxying heavy bytes through the backend:
 
 ```sh
-npm run 02-nginx
+npm run 02-blob-storage
 ```
 
-Open `http://localhost:8088` for HTTP, or `https://localhost:8443` for HTTPS with HTTP/2 and a local self-signed certificate.
-
-Clean everything up when you are done:
+Before running, copy the environment file and set your AWS credentials:
 
 ```sh
-npm run 02-nginx:destroy
+cp 02-blob-storage/.env.example 02-blob-storage/.env
 ```
+
+### Try the API
+
+Import `postman/02-blob-storage.postman_collection.json` or use `curl`:
+
+1. **Get a signed upload URL**:
+
+   ```sh
+   curl -X POST http://localhost:3016/signed-url/upload \
+     -H "Content-Type: application/json" \
+     -d '{"key": "demo.txt", "contentType": "text/plain"}'
+   ```
+
+2. **Upload directly to S3**:
+   Send a `PUT` request with your file content directly to the returned `url`.
+
+3. **Get a signed download URL**:
+
+   ```sh
+   curl -X POST http://localhost:3016/signed-url/download \
+     -H "Content-Type: application/json" \
+     -d '{"key": "demo.txt"}'
+   ```
+
+4. **Download directly from S3**:
+   Send a `GET` request directly to the returned `url`.
+
 
 ## 03-be-db-app
 
@@ -121,45 +163,6 @@ Clean the sharded cluster containers and volumes when you are done:
 npm run 05-sharding:destroy
 ```
 
-## 06-blob-storage
-
-Run a Node.js API that creates short-lived signed URLs for uploading to and downloading from S3:
-
-```sh
-npm run 06-blob-storage
-```
-
-Before running it, copy `06-blob-storage/.env.example` to `06-blob-storage/.env` and fill in the S3 bucket and AWS credentials.
-
-Import `postman/06-blob-storage.postman_collection.json` to request an upload URL, upload a sample file directly to S3, request a download URL, and read the file back.
-
-## 07-caching
-
-Run a local Redis Cluster with three masters, one replica per master, and a Node.js API that stores like counters across cluster keys:
-
-```sh
-npm run 07-caching
-```
-
-Open `http://localhost:3017`, or import `postman/07-caching.postman_collection.json` to add and read likes.
-
-This example maps the API to `localhost:3017` and Redis nodes to `localhost:6371` through `localhost:6376`.
-
-REDIS CLI COMMANDS:
-
-```sh
-docker exec -it io-system-design-07-redis-node-1 redis-cli
-cluster nodes
-cluster slots
-cluster keyslot <key>
-```
-
-Clean the Redis cluster containers and volumes when you are done:
-
-```sh
-npm run 07-caching:destroy
-```
-
 ## 08-eda
 
 Run a local Kafka broker, an HTTP ingress producer, and three separate consumer apps:
@@ -179,3 +182,12 @@ Clean the Kafka broker and app containers when you are done:
 ```sh
 npm run 08-eda:destroy
 ```
+
+## 09-istio-grpc
+
+Run two Node.js services in Docker Desktop Kubernetes with Istio-managed Envoy
+sidecars. The cart service calls the inventory service over gRPC:
+
+Follow [09-istio-grpc/README.md](09-istio-grpc/README.md). It uses Dockerized
+`kubectl` and `istioctl`, so only Docker Desktop with Kubernetes enabled is
+needed on the host.

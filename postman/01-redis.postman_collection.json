@@ -1,0 +1,92 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-4a1b-9c8d-01rediscol01",
+    "name": "01-redis",
+    "description": "Requests for the 01-redis Hot Key Mitigation (Celebrity Profile Suffix Replication) lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Post 100 (pushes to all 3 nodes)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": \"100\"\n}"
+        },
+        "url": "{{baseUrl}}/celebrity/{{celebrityId}}/posts"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Post 200 (pushes to all 3 nodes)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": \"200\"\n}"
+        },
+        "url": "{{baseUrl}}/celebrity/{{celebrityId}}/posts"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Post 300 (pushes to all 3 nodes)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": \"300\"\n}"
+        },
+        "url": "{{baseUrl}}/celebrity/{{celebrityId}}/posts"
+      },
+      "response": []
+    },
+    {
+      "name": "Read posts (routes to random replica node)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/celebrity/{{celebrityId}}/posts"
+      },
+      "response": []
+    },
+    {
+      "name": "Inspect all 3 replica keys across cluster",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/celebrity/{{celebrityId}}/posts/all"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3017"
+    },
+    {
+      "key": "celebrityId",
+      "value": "taylor"
+    }
+  ]
+}
