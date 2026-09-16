@@ -1,0 +1,39 @@
+{
+  "info": {
+    "_postman_id": "b4b5e5b6-3c17-4f0b-b581-08f1f4a2f008",
+    "name": "04-eda",
+    "description": "Create one push notification event per user with Kafka.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Send a notification to 10 users",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userIds\": [\n    \"user-1\",\n    \"user-2\",\n    \"user-3\",\n    \"user-4\",\n    \"user-5\",\n    \"user-6\",\n    \"user-7\",\n    \"user-8\",\n    \"user-9\",\n    \"user-10\"\n  ],\n  \"type\": \"NEWS\",\n  \"title\": \"System design workshop\",\n  \"body\": \"The Kafka lesson is starting.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/send"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3018"
+    }
+  ]
+}

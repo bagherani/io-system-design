@@ -1,7 +1,7 @@
 services:
   kafka:
     image: apache/kafka:3.9.1
-    container_name: io-system-design-08-kafka
+    container_name: io-system-design-04-kafka
     environment:
       KAFKA_NODE_ID: "1"
       KAFKA_PROCESS_ROLES: broker,controller
@@ -28,8 +28,7 @@ services:
         condition: service_healthy
     command: >
       sh -c '
-        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic orders --partitions 1 --replication-factor 1;
-        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic incidents --partitions 1 --replication-factor 1;
+        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic push-notifications --partitions 3 --replication-factor 1;
       '
 
   ingress:
@@ -51,10 +50,10 @@ services:
           echo "Run npm install from the repository root first.";
           exit 1;
         fi;
-        node 08-eda/apps/ingress.js
+        node 04-eda/apps/ingress.js
       '
 
-  app-2-email:
+  consumer:
     image: node:22-alpine
     depends_on:
       topic-setup:
@@ -63,38 +62,7 @@ services:
     volumes:
       - ..:/app:ro
     environment:
-      SERVICE_NAME: app-2-email
-      GROUP_ID: app-2-email
-      TOPIC: orders
+      GROUP_ID: notification-workers
+      TOPIC: push-notifications
       KAFKA_BROKERS: kafka:9092
-    command: node 08-eda/apps/consumer.js
-
-  app-3-analytics:
-    image: node:22-alpine
-    depends_on:
-      topic-setup:
-        condition: service_completed_successfully
-    working_dir: /app
-    volumes:
-      - ..:/app:ro
-    environment:
-      SERVICE_NAME: app-3-analytics
-      GROUP_ID: app-3-analytics
-      TOPIC: orders
-      KAFKA_BROKERS: kafka:9092
-    command: node 08-eda/apps/consumer.js
-
-  app-4-support:
-    image: node:22-alpine
-    depends_on:
-      topic-setup:
-        condition: service_completed_successfully
-    working_dir: /app
-    volumes:
-      - ..:/app:ro
-    environment:
-      SERVICE_NAME: app-4-support
-      GROUP_ID: app-4-support
-      TOPIC: incidents
-      KAFKA_BROKERS: kafka:9092
-    command: node 08-eda/apps/consumer.js
+    command: node 04-eda/apps/consumer.js

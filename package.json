@@ -5,13 +5,14 @@
     "01-redis": "docker compose -f 01-redis/docker-compose.yml up app",
     "01-redis:cluster": "docker compose -f 01-redis/docker-compose.yml up -d redis-node-1 redis-node-2 redis-node-3 && docker compose -f 01-redis/docker-compose.yml run --rm redis-cluster-setup",
     "01-redis:destroy": "docker compose -f 01-redis/docker-compose.yml down -v",
+    "02-blob-storage": "node 02-blob-storage/index.js",
     "03-replicaset": "npm run 03-replicaset:db && docker compose -f 03-replicaset/docker-compose.yml up app",
     "03-replicaset:db": "docker compose -f 03-replicaset/docker-compose.yml up -d mongodb-primary mongodb-secondary-1 mongodb-secondary-2 && docker compose -f 03-replicaset/docker-compose.yml run --rm replica-setup",
     "03-replicaset:destroy": "docker compose -f 03-replicaset/docker-compose.yml down -v",
-    "02-blob-storage": "node 02-blob-storage/index.js",
-    "08-eda": "docker compose -f 08-eda/docker-compose.yml up",
-    "08-eda:kafka": "docker compose -f 08-eda/docker-compose.yml up -d kafka",
-    "08-eda:destroy": "docker compose -f 08-eda/docker-compose.yml down -v"
+    "04-eda": "docker compose -f 04-eda/docker-compose.yml up",
+    "04-eda:scale": "docker compose -f 04-eda/docker-compose.yml up --scale consumer=3",
+    "04-eda:kafka": "docker compose -f 04-eda/docker-compose.yml up -d kafka",
+    "04-eda:destroy": "docker compose -f 04-eda/docker-compose.yml down -v"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

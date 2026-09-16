@@ -108,7 +108,6 @@ Import `postman/02-blob-storage.postman_collection.json` or use `curl`:
 4. **Download directly from S3**:
    Send a `GET` request directly to the returned `url`.
 
-
 ## 03-replicaset
 
 Run one MongoDB primary, two secondaries, and the photo metadata API:
@@ -127,31 +126,24 @@ Clean up:
 npm run 03-replicaset:destroy
 ```
 
-## 08-eda
+## 04-eda
 
-Run a local Kafka broker, an HTTP ingress producer, and three separate consumer apps:
-
-```sh
-npm run 08-eda
-```
-
-Open `http://localhost:3018`, or import `postman/08-eda.postman_collection.json` to publish order and incident events.
-
-`GET /order/:id` publishes to the `orders` topic, which is consumed by app 2 and app 3. `GET /incident/:id` publishes to the `incidents` topic, which is consumed by app 4.
-
-The consumers manually acknowledge each event by committing the next Kafka offset after processing it. If a consumer crashes before that commit, Kafka can deliver the event again to the same consumer group, so handlers should be safe to run more than once.
-
-Clean the Kafka broker and app containers when you are done:
+Run one Kafka broker, one notification producer, and one consumer:
 
 ```sh
-npm run 08-eda:destroy
+npm run 04-eda
 ```
 
-## 09-istio-grpc
+Import `postman/04-eda.postman_collection.json` and send the editable ten-user request. The producer creates one Kafka event per user without calling a push provider.
 
-Run two Node.js services in Docker Desktop Kubernetes with Istio-managed Envoy
-sidecars. The cart service calls the inventory service over gRPC:
+Run three consumers to see Kafka share the events between them:
 
-Follow [09-istio-grpc/README.md](09-istio-grpc/README.md). It uses Dockerized
-`kubectl` and `istioctl`, so only Docker Desktop with Kubernetes enabled is
-needed on the host.
+```sh
+npm run 04-eda:scale
+```
+
+Clean up:
+
+```sh
+npm run 04-eda:destroy
+```
