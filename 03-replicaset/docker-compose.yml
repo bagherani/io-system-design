@@ -1,30 +1,30 @@
 services:
   mongodb-primary:
     image: mongo:7
-    container_name: io-system-design-04-mongodb-primary
+    container_name: io-system-design-03-mongodb-primary
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     ports:
       - "27041:27017"
     volumes:
-      - mongodb_04_primary_data:/data/db
+      - mongodb_03_primary_data:/data/db
 
   mongodb-secondary-1:
     image: mongo:7
-    container_name: io-system-design-04-mongodb-secondary-1
+    container_name: io-system-design-03-mongodb-secondary-1
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     ports:
       - "27042:27017"
     volumes:
-      - mongodb_04_secondary_1_data:/data/db
+      - mongodb_03_secondary_1_data:/data/db
 
   mongodb-secondary-2:
     image: mongo:7
-    container_name: io-system-design-04-mongodb-secondary-2
+    container_name: io-system-design-03-mongodb-secondary-2
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     ports:
       - "27043:27017"
     volumes:
-      - mongodb_04_secondary_2_data:/data/db
+      - mongodb_03_secondary_2_data:/data/db
 
   replica-setup:
     image: mongo:7
@@ -54,7 +54,6 @@ services:
     working_dir: /app
     volumes:
       - ..:/app:ro
-      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       MONGODB_URI: mongodb://mongodb-primary:27017,mongodb-secondary-1:27017,mongodb-secondary-2:27017/replicaSetDemo?replicaSet=rs0
       PORT: 3014
@@ -64,10 +63,10 @@ services:
           echo "Run npm install from the repository root first.";
           exit 1;
         fi;
-        node 04-replicaset/index.js
+          node 03-replicaset/index.js
       '
 
 volumes:
-  mongodb_04_primary_data:
-  mongodb_04_secondary_1_data:
-  mongodb_04_secondary_2_data:
+        mongodb_03_primary_data:
+        mongodb_03_secondary_1_data:
+        mongodb_03_secondary_2_data:

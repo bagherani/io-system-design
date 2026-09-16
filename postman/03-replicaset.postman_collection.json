@@ -1,0 +1,115 @@
+{
+  "info": {
+    "_postman_id": "870115eb-cec8-45df-89aa-483fa709f6f2",
+    "name": "03-replicaset",
+    "description": "Photo metadata requests for the MongoDB replica-set lesson.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Replica set status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/replica-set/status"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Write photo - all members",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"photoId\": \"photo-all-101\",\n  \"userId\": \"user-101\",\n  \"caption\": \"Written after all members acknowledge\",\n  \"mediaUrl\": \"https://cdn.example.com/photos/photo-all-101.jpg\"\n}"
+        },
+        "url": "{{baseUrl}}/photos?writeConcern=all"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Write photo - majority",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"photoId\": \"photo-majority-102\",\n  \"userId\": \"user-102\",\n  \"caption\": \"Written after a majority acknowledges\",\n  \"mediaUrl\": \"https://cdn.example.com/photos/photo-majority-102.jpg\"\n}"
+        },
+        "url": "{{baseUrl}}/photos?writeConcern=majority"
+      },
+      "response": []
+    },
+    {
+      "name": "4. Write photo - primary only",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"photoId\": \"photo-primary-103\",\n  \"userId\": \"user-103\",\n  \"caption\": \"Written after only the primary acknowledges\",\n  \"mediaUrl\": \"https://cdn.example.com/photos/photo-primary-103.jpg\"\n}"
+        },
+        "url": "{{baseUrl}}/photos?writeConcern=primary"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Read photos - majority",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/photos?readMode=majority"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Read photos - secondary preferred",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/photos?readMode=secondaryPreferred"
+      },
+      "response": []
+    },
+    {
+      "name": "7. Read photos - all members",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/photos?readMode=all"
+      },
+      "response": []
+    },
+    {
+      "name": "8. Clear photos",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/photos"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3014"
+    }
+  ]
+}

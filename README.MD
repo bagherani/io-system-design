@@ -109,58 +109,22 @@ Import `postman/02-blob-storage.postman_collection.json` or use `curl`:
    Send a `GET` request directly to the returned `url`.
 
 
-## 03-be-db-app
+## 03-replicaset
 
-Run a local MongoDB container and a Node.js API that inserts, queries, updates, and deletes mock users:
+Run one MongoDB primary, two secondaries, and the photo metadata API:
 
 ```sh
-npm run 03-be-db-app
+npm run 03-replicaset
 ```
 
-Open `http://localhost:3013`, or import `postman/03-be-db-app.postman_collection.json` to try the CRUD requests.
+Import `postman/03-replicaset.postman_collection.json` to try three write concerns, three read modes, and compare data on every member.
 
-This example maps the API to `localhost:3013` and MongoDB to `localhost:27031` so it does not conflict with a default local MongoDB on `27017`.
+The API uses `localhost:3014`. MongoDB members use `27041`, `27042`, and `27043`.
 
-Clean the database container and volume when you are done:
-
-```sh
-npm run 03-be-db-app:destroy
-```
-
-## 04-replicaset
-
-Run a local MongoDB replica set with one primary, two secondaries, and a Node.js API for trying different write concerns, read concerns, and read preferences:
+Clean up:
 
 ```sh
-npm run 04-replicaset
-```
-
-Open `http://localhost:3014`, or import `postman/04-replicaset.postman_collection.json` to try the replica set requests.
-
-This example maps the API to `localhost:3014` and the replica set members to `localhost:27041`, `localhost:27042`, and `localhost:27043`.
-
-Clean the replica set containers and volumes when you are done:
-
-```sh
-npm run 04-replicaset:destroy
-```
-
-## 05-sharding
-
-Run a local MongoDB sharded cluster with two country shards and a Node.js API for trying targeted shard-key queries, scatter-gather queries, and writes across shard ranges:
-
-```sh
-npm run 05-sharding
-```
-
-Open `http://localhost:3015`, or import `postman/05-sharding.postman_collection.json` to try the sharding requests.
-
-This example maps the API to `localhost:3015`, the config server to `localhost:27050`, the shard servers to `localhost:27051` and `localhost:27052`, and the `mongos` router to `localhost:27053`.
-
-Clean the sharded cluster containers and volumes when you are done:
-
-```sh
-npm run 05-sharding:destroy
+npm run 03-replicaset:destroy
 ```
 
 ## 08-eda
