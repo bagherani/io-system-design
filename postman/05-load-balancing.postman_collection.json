@@ -1,0 +1,25 @@
+{
+  "info": {
+    "_postman_id": "53f3e1ee-6a57-4c47-9ab0-55313b5c5ca1",
+    "name": "05-load-balancing",
+    "description": "Send this request repeatedly to see Nginx distribute traffic across three counter API instances.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get mock content counts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/content/counts?ids=video-123"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3022"
+    }
+  ]
+}

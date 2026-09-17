@@ -1,0 +1,41 @@
+services:
+  app-1:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app:ro
+    environment:
+      PORT: "3000"
+      INSTANCE_NAME: app-1
+    command: node 05-load-balancing/index.js
+
+  app-2:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app:ro
+    environment:
+      PORT: "3000"
+      INSTANCE_NAME: app-2
+    command: node 05-load-balancing/index.js
+
+  app-3:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app:ro
+    environment:
+      PORT: "3000"
+      INSTANCE_NAME: app-3
+    command: node 05-load-balancing/index.js
+
+  nginx:
+    image: nginx:1.27-alpine
+    depends_on:
+      - app-1
+      - app-2
+      - app-3
+    ports:
+      - "3022:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro

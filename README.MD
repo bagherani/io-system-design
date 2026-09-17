@@ -147,3 +147,31 @@ Clean up:
 ```sh
 npm run 04-eda:destroy
 ```
+
+## 05-load-balancing
+
+Run Nginx in front of three copies of a mock View/Like Counter API:
+
+```sh
+npm run 05-load-balancing
+```
+
+Nginx listens at `http://localhost:3022`. Import `postman/05-load-balancing.postman_collection.json` and send the counter request several times, or use curl:
+
+```sh
+curl "http://localhost:3022/content/counts?ids=video-123"
+```
+
+The fixed counts stay the same while `servedBy` rotates through `app-1`, `app-2`, and `app-3` using Nginx's default round-robin algorithm.
+
+To compare algorithms, open `05-load-balancing/nginx.conf` and uncomment either `least_conn;` or `ip_hash;`. Keep only one algorithm uncommented, then validate and reload Nginx without restarting the app instances:
+
+```sh
+npm run 05-load-balancing:reload
+```
+
+Clean up:
+
+```sh
+npm run 05-load-balancing:destroy
+```

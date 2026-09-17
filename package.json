@@ -12,7 +12,10 @@
     "04-eda": "docker compose -f 04-eda/docker-compose.yml up",
     "04-eda:scale": "docker compose -f 04-eda/docker-compose.yml up --scale consumer=3",
     "04-eda:kafka": "docker compose -f 04-eda/docker-compose.yml up -d kafka",
-    "04-eda:destroy": "docker compose -f 04-eda/docker-compose.yml down -v"
+    "04-eda:destroy": "docker compose -f 04-eda/docker-compose.yml down -v",
+    "05-load-balancing": "docker compose -f 05-load-balancing/docker-compose.yml up",
+    "05-load-balancing:reload": "docker compose -f 05-load-balancing/docker-compose.yml exec nginx nginx -t && docker compose -f 05-load-balancing/docker-compose.yml exec nginx nginx -s reload",
+    "05-load-balancing:destroy": "docker compose -f 05-load-balancing/docker-compose.yml down"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
