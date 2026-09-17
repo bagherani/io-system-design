@@ -68,6 +68,26 @@ Import `postman/01-redis.postman_collection.json` or use `curl`:
 npm run 01-redis:destroy
 ```
 
+### Redis CLI Cheatsheet
+
+Open a shell on one node. The `-c` option follows cluster redirects:
+
+```sh
+docker compose -f 01-redis/docker-compose.yml exec redis-node-1 redis-cli -c
+```
+
+Then type:
+
+```redis
+SET demo:key "hello"
+GET demo:key
+LPUSH demo:list "first"
+LRANGE demo:list 0 -1
+CLUSTER KEYSLOT demo:key
+CLUSTER SLOTS
+CLUSTER NODES
+```
+
 ## 02-blob-storage
 
 Run a Node.js API that creates short-lived S3 signed URLs so clients can upload and download files directly without proxying heavy bytes through the backend:
