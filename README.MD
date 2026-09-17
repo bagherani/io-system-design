@@ -128,6 +128,22 @@ Import `postman/02-blob-storage.postman_collection.json` or use `curl`:
 4. **Download directly from S3**:
    Send a `GET` request directly to the returned `url`.
 
+### AWS Setup
+
+1. In the AWS Console, open **S3**, create a bucket, choose a region, and keep **Block all public access** enabled.
+2. Open **IAM**, create a user for this lesson, and attach an inline policy that allows `s3:PutObject` and `s3:GetObject` on `arn:aws:s3:::YOUR_BUCKET_NAME/*`.
+3. On the IAM user's **Security credentials** tab, create an access key for an application running outside AWS. Save the secret immediately; AWS shows it only once.
+4. Copy `02-blob-storage/.env.example` to `02-blob-storage/.env`, then set:
+
+   ```dotenv
+   S3_BUCKET_NAME=YOUR_BUCKET_NAME
+   AWS_REGION=YOUR_BUCKET_REGION
+   AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY_ID
+   AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
+   ```
+
+Never commit `02-blob-storage/.env` or share its credentials.
+
 ## 03-replicaset
 
 Run one MongoDB primary, two secondaries, and the photo metadata API:
