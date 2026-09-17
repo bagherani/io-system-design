@@ -172,12 +172,6 @@ npm run 04-eda
 
 Import `postman/04-eda.postman_collection.json` and send the editable ten-user request. The producer creates one Kafka event per user without calling a push provider.
 
-Run three consumers to see Kafka share the events between them:
-
-```sh
-npm run 04-eda:scale
-```
-
 Clean up:
 
 ```sh
